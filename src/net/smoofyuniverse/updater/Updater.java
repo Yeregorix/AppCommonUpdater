@@ -32,18 +32,28 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Updater {
+	public static final int MINIMUM_VERSION = 1;
 	
 	public static void main(String[] args) throws IOException, InterruptedException {
-		if (args.length < 2)
+		if (args.length == 0)
 			return;
-		update(Paths.get(args[0]), Paths.get(args[1]), Arrays.copyOfRange(args, 2, args.length));
+
+		int version = Integer.parseInt(args[0]);
+		if (version < MINIMUM_VERSION)
+			throw new IllegalArgumentException("version");
+
+		if (args.length < 4)
+			throw new IllegalArgumentException("length");
+
+		update(Paths.get(args[1]), Paths.get(args[2]), args[3].toLowerCase().equals("true"), Arrays.copyOfRange(args, 4, args.length));
 	}
-	
-	public static void update(Path source, Path target, String[] args) throws IOException, InterruptedException {
+
+	public static void update(Path source, Path target, boolean launch, String[] args) throws IOException, InterruptedException {
 		if (!Files.exists(source))
 			return;
 		move(source, target);
-		launch(target, args);
+		if (launch)
+			launch(target, args);
 	}
 	
 	public static void move(Path source, Path target) throws IOException, InterruptedException {
