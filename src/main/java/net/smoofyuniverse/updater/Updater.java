@@ -30,7 +30,6 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 public class Updater {
 	public static final int MINIMUM_VERSION = 1;
@@ -46,7 +45,7 @@ public class Updater {
 		if (args.length < 4)
 			throw new IllegalArgumentException("length");
 
-		update(Paths.get(args[1]), Paths.get(args[2]), args[3].toLowerCase(Locale.ROOT).equals("true"), Arrays.copyOfRange(args, 4, args.length));
+		update(Paths.get(args[1]), Paths.get(args[2]), args[3].equalsIgnoreCase("true"), Arrays.copyOfRange(args, 4, args.length));
 	}
 
 	public static void update(Path source, Path target, boolean launch, String[] args) throws IOException, InterruptedException {
